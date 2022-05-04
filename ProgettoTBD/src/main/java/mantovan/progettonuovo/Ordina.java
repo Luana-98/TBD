@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.SpinnerNumberModel;
@@ -48,6 +50,9 @@ public class Ordina extends javax.swing.JPanel {
         ordinaDialog = new javax.swing.JDialog();
         ordinaSpinner = new javax.swing.JSpinner();
         okOrdinaDialog = new javax.swing.JButton();
+        completedDialog = new javax.swing.JDialog();
+        jLabel5 = new javax.swing.JLabel();
+        completedButton = new javax.swing.JButton();
         magchoice = new javax.swing.JComboBox<>();
         catchoice = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -136,6 +141,40 @@ public class Ordina extends javax.swing.JPanel {
                 .addGap(56, 56, 56))
         );
 
+        completedDialog.setMinimumSize(new java.awt.Dimension(400, 300));
+
+        jLabel5.setText("Ordine effettuato!");
+
+        completedButton.setText("Ok");
+        completedButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                completedButtonMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout completedDialogLayout = new javax.swing.GroupLayout(completedDialog.getContentPane());
+        completedDialog.getContentPane().setLayout(completedDialogLayout);
+        completedDialogLayout.setHorizontalGroup(
+            completedDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, completedDialogLayout.createSequentialGroup()
+                .addContainerGap(136, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(97, 97, 97))
+            .addGroup(completedDialogLayout.createSequentialGroup()
+                .addGap(162, 162, 162)
+                .addComponent(completedButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        completedDialogLayout.setVerticalGroup(
+            completedDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(completedDialogLayout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addComponent(jLabel5)
+                .addGap(57, 57, 57)
+                .addComponent(completedButton)
+                .addContainerGap(115, Short.MAX_VALUE))
+        );
+
         setPreferredSize(new java.awt.Dimension(600, 600));
 
         magchoice.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tutti i magazzini" }));
@@ -198,7 +237,7 @@ public class Ordina extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(ordinaList);
 
-        ordinaOk.setText("jButton2");
+        ordinaOk.setText("Ordina");
         ordinaOk.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ordinaOkMouseClicked(evt);
@@ -310,7 +349,7 @@ public class Ordina extends javax.swing.JPanel {
         
         int magIndex = magchoice.getSelectedIndex();
         int catIndex = catchoice.getSelectedIndex();
-        String tableQuery = "SELECT MAGAZZINO.NOME AS MAG, CATEGORIA.NOMECAT, "
+        String tableQuery = "SELECT MAGAZZINO.CODMAG AS MAG, CATEGORIA.NOMECAT, "
                 + "PRODOTTO.NOME AS PROD, PRODOTTO.TAGLIA, PRODOTTO.QUANTITA, "
                 + "PRODOTTO.PREZZO, PRODOTTO.BARCODE "
                 + "FROM MAGAZZINO, CATEGORIA, PRODOTTO, MAGCAT "
@@ -355,7 +394,7 @@ public class Ordina extends javax.swing.JPanel {
             this.setEnabled(false);
             DefaultListModel model = (DefaultListModel) ordinaList.getModel();
             String nq = model.get(ordinaList.getSelectedIndex()).toString();
-            nq = nq.substring(0, nq.indexOf("x"));
+            nq = nq.substring(nq.indexOf(":")+2, nq.indexOf("*"));
             int maximum = Integer.parseInt(nq);
             SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
             eliminaSpinner.setModel(m);
@@ -365,16 +404,51 @@ public class Ordina extends javax.swing.JPanel {
     }//GEN-LAST:event_ordinaListMouseClicked
 
     private void ordinaOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordinaOkMouseClicked
-
+        SimpleDateFormat date = new SimpleDateFormat("dd_MM_yyyy_HHmmss");
+        String codOrdine = date.format(new Date());
+        String query = "INSERT INTO ORDINE(COD_ORDINE) VALUES ('" + codOrdine + "')";
+        String queryOrdine;
+        DefaultListModel model = (DefaultListModel) ordinaList.getModel();        
+        try{
+            Statement stmt = this.conn.createStatement();
+            stmt.executeUpdate(query);
+            for(int i = 0; i < model.getSize(); i++){
+                String element = model.getElementAt(i).toString();
+                String codProd = element.substring(element.indexOf("* ")+2, element.lastIndexOf(":"));
+                String magazzino = element.substring(10, element.indexOf(":"));
+                String quantita = element.substring(element.indexOf(":")+2, element.indexOf("*"));
+                String nome = element.substring(element.lastIndexOf(":")+2);
+                queryOrdine = "INSERT INTO PRODOTTO_ORDINE"
+                        + "(PK, COD_PROD_ORD, MAGAZZINO, QUANTITA, COD_ORDINE, NOME)"
+                        + " VALUES(DEFAULT, '" + codProd + "', '" + magazzino + "',"
+                        + quantita + ",'" + codOrdine + "','" + nome + "')";
+                stmt.executeUpdate(queryOrdine);
+                String select = "SELECT QUANTITA FROM PRODOTTO WHERE BARCODE = '" + codProd+"'";
+                ResultSet rs = stmt.executeQuery(select);
+                rs.next();
+                int maxq = rs.getInt("QUANTITA");
+                maxq -= Integer.parseInt(quantita);
+                String update = "UPDATE PRODOTTO SET QUANTITA = " + maxq
+                        + " WHERE BARCODE = '" + codProd + "'";
+                stmt.executeUpdate(update);
+                System.out.println("Completato");
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        completedDialog.setVisible(true);
+        completedDialog.setLocationRelativeTo(null);
     }//GEN-LAST:event_ordinaOkMouseClicked
     
     private void aggiornaOrdinaLista(){
         int index = ordinaList.getSelectedIndex();
         DefaultListModel model = (DefaultListModel) ordinaList.getModel();
         String nuovo = model.get(index).toString();
-        nuovo = nuovo.substring(nuovo.indexOf("x"));
+        String n = nuovo.substring(0, nuovo.indexOf(":")+2);
+        nuovo = nuovo.substring(nuovo.indexOf("*"));        
         q -=eliminaq;
-        nuovo = String.valueOf(q) + nuovo;        
+        nuovo = n+ String.valueOf(q) + nuovo;        
         model.remove(index);
         if(q >0)
             model.add(WIDTH-1, nuovo);
@@ -389,20 +463,22 @@ public class Ordina extends javax.swing.JPanel {
         cart.setText("Carrello: " + String.valueOf(el));
         eliminaDialog.dispose();
     }//GEN-LAST:event_eliminaOkMouseClicked
+    
     private void riempiOrdinaLista(){
         String prod = (String) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 3);
         String barcode = (String) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 2);
+        String magazzino = (String) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 0);
         DefaultListModel model = (DefaultListModel) ordinaList.getModel();
         for(int i = 0; i < model.getSize(); i++){
             if(model.get(i).toString().contains(barcode)){
                 String nq = model.get(i).toString();
-                nq = nq.substring(0, nq.indexOf("x"));
+                nq = nq.substring(nq.indexOf(":")+2, nq.indexOf("*"));
                 q += Integer.parseInt(nq);
                 model.remove(i);
                 break;
             }
         }
-        String s = q+"x " + barcode + ": " + prod;
+        String s ="Magazzino " + magazzino + ": "+q+"* " + barcode + ": " + prod;
         model.add(WIDTH-1, s);
         ordinaList.setModel(model);
     }
@@ -416,12 +492,24 @@ public class Ordina extends javax.swing.JPanel {
         cart.setText("Carrello: " + String.valueOf(el));
         ordinaDialog.dispose();
     }//GEN-LAST:event_okOrdinaDialogMouseClicked
+    
+    private void svuotaLista(){
+        ordinaList.setModel(new DefaultListModel());
+    }
+    
+    private void completedButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_completedButtonMouseClicked
+        svuotaLista();
+        riempiOrdinaTable();
+        completedDialog.dispose();
+    }//GEN-LAST:event_completedButtonMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiornaButton;
     public javax.swing.JTextField cart;
     private javax.swing.JComboBox<String> catchoice;
+    private javax.swing.JButton completedButton;
+    private javax.swing.JDialog completedDialog;
     private javax.swing.JDialog eliminaDialog;
     private javax.swing.JButton eliminaOk;
     private javax.swing.JSpinner eliminaSpinner;
@@ -429,6 +517,7 @@ public class Ordina extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JComboBox<String> magchoice;
