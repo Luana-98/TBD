@@ -27,7 +27,7 @@ public class VediOrdini extends javax.swing.JPanel {
         riempiOrdiniList();
     }
 
-    private void riempiOrdiniList(){
+    public void riempiOrdiniList(){
         String queryString = "SELECT COD_ORDINE FROM ORDINE";
         int i = 1;
         DefaultListModel model = new DefaultListModel();
@@ -59,6 +59,8 @@ public class VediOrdini extends javax.swing.JPanel {
         numeroOrdine = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+
+        setPreferredSize(new java.awt.Dimension(750, 600));
 
         contenutoOrdine.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         contenutoOrdine.setEnabled(false);

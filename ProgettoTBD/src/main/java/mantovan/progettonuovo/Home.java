@@ -18,6 +18,7 @@ public class Home extends javax.swing.JFrame {
     Inizio in;
     Ordina ordina;
     VediOrdini vedi;
+    EstinguiOrdini estingui;
     /**
      * Creates new form Home
      */
@@ -42,6 +43,8 @@ public class Home extends javax.swing.JFrame {
         jTabbedPane2.addTab("Ordina", ordina);
         vedi = new VediOrdini(conn);
         jTabbedPane2.addTab("Visualizza Ordini", vedi);
+        estingui = new EstinguiOrdini(conn);
+        jTabbedPane2.addTab("Estingui ordini", estingui);
         
     }
 
@@ -61,6 +64,11 @@ public class Home extends javax.swing.JFrame {
 
         jTabbedPane2.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane2.setPreferredSize(new java.awt.Dimension(750, 600));
+        jTabbedPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane2MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,6 +88,27 @@ public class Home extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTabbedPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane2MouseClicked
+        int index = jTabbedPane2.getSelectedIndex();
+        switch(index){
+            case 0:
+                in = new Inizio();
+                break;
+            case 1:
+                p = new Prodotti(conn);
+                break;
+            case 2:                
+                ordina = new Ordina(conn);
+                break;
+            case 3:
+                vedi.riempiOrdiniList();
+                break;
+            case 4:
+                estingui = new EstinguiOrdini(conn);
+                break;
+        }
+    }//GEN-LAST:event_jTabbedPane2MouseClicked
 
     /**
      * @param args the command line arguments
