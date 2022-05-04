@@ -16,9 +16,8 @@ public class Inizio extends javax.swing.JPanel {
     /**
      * Creates new form Inizio
      */
-    public Inizio(Connection c) {
+    public Inizio() {
         initComponents();
-        this.conn = c;
     }
 
     /**

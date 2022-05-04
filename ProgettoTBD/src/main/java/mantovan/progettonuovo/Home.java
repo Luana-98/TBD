@@ -17,6 +17,7 @@ public class Home extends javax.swing.JFrame {
     Prodotti p;
     Inizio in;
     Ordina ordina;
+    VediOrdini vedi;
     /**
      * Creates new form Home
      */
@@ -33,12 +34,15 @@ public class Home extends javax.swing.JFrame {
         }
         initComponents();
         this.setLocationRelativeTo(null);
-        in = new Inizio(conn);
+        in = new Inizio();
         jTabbedPane2.addTab("Principale", in);
         p = new Prodotti(conn);
         jTabbedPane2.addTab("Prodotti", p);
         ordina = new Ordina(conn);
         jTabbedPane2.addTab("Ordina", ordina);
+        vedi = new VediOrdini(conn);
+        jTabbedPane2.addTab("Visualizza Ordini", vedi);
+        
     }
 
     /**
