@@ -96,16 +96,17 @@ public class Home extends javax.swing.JFrame {
                 in = new Inizio();
                 break;
             case 1:
-                p = new Prodotti(conn);
+                p.riempiTabella();
                 break;
             case 2:                
-                ordina = new Ordina(conn);
+                ordina.riempiOrdinaTable();
                 break;
             case 3:
                 vedi.riempiOrdiniList();
+                vedi.riempiContenutoList();
                 break;
             case 4:
-                estingui = new EstinguiOrdini(conn);
+                estingui.riempiList();
                 break;
         }
     }//GEN-LAST:event_jTabbedPane2MouseClicked

@@ -24,7 +24,10 @@ public class Prodotti extends javax.swing.JPanel {
     public Prodotti(Connection conn) {
         initComponents();
         this.conn = conn;
-        String prodottiQuery = "SELECT PRODOTTO_NEGOZIO.NOME, PRODOTTO.PREZZO, PRODOTTO_NEGOZIO.QUANTITA FROM PRODOTTO_NEGOZIO, PRODOTTO"
+        riempiTabella();
+    }
+    public void riempiTabella(){
+        String prodottiQuery = "SELECT PRODOTTO_NEGOZIO.NOME, PRODOTTO_NEGOZIO.PREZZO, PRODOTTO_NEGOZIO.QUANTITA FROM PRODOTTO_NEGOZIO, PRODOTTO"
                 + " WHERE PRODOTTO.BARCODE = PRODOTTO_NEGOZIO.BARCODE";
         try{
             Statement stmt = this.conn.createStatement();

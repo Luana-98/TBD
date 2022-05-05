@@ -107,27 +107,30 @@ public class VediOrdini extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    private void riempiContenutoList(){
-        String codOrdine = numeroOrdine.getSelectedValue()
-                .substring(numeroOrdine.getSelectedValue().indexOf(":")+2);
-        String queryString = "SELECT COD_PROD_ORD AS COD, QUANTITA, NOME "
-                + "FROM PRODOTTO_ORDINE WHERE PRODOTTO_ORDINE.COD_ORDINE = '" 
-                + codOrdine + "'";
-        DefaultListModel model = new DefaultListModel();
-        try {
-            Statement stmt = this.conn.createStatement();
-            ResultSet rs = stmt.executeQuery(queryString);           
-            while(rs.next()){
-                String cod = rs.getString("COD");
-                int quantita = rs.getInt("QUANTITA");
-                String nome = rs.getString("NOME");
-                String s = String.valueOf(quantita) + "x: " + cod + " - " + nome;                
-                model.addElement(s);
+    public void riempiContenutoList(){
+        if(numeroOrdine.getSelectedIndex() != -1){
+            String codOrdine = numeroOrdine.getSelectedValue()
+                    .substring(numeroOrdine.getSelectedValue().indexOf(":")+2);
+            String queryString = "SELECT COD_PROD_ORD AS COD, QUANTITA, NOME "
+                    + "FROM PRODOTTO_ORDINE WHERE PRODOTTO_ORDINE.COD_ORDINE = '" 
+                    + codOrdine + "'";
+            DefaultListModel model = new DefaultListModel();
+            try {
+                Statement stmt = this.conn.createStatement();
+                ResultSet rs = stmt.executeQuery(queryString);           
+                while(rs.next()){
+                    String cod = rs.getString("COD");
+                    int quantita = rs.getInt("QUANTITA");
+                    String nome = rs.getString("NOME");
+                    String s = String.valueOf(quantita) + "x: " + cod + " - " + nome;                
+                    model.addElement(s);
+                }
+                contenutoOrdine.setModel(model);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            contenutoOrdine.setModel(model);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+        else contenutoOrdine.setModel(new DefaultListModel<>());
     }
     
     private void numeroOrdineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_numeroOrdineMouseClicked
