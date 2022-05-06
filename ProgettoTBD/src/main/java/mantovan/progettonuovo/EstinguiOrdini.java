@@ -130,7 +130,7 @@ public class EstinguiOrdini extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void estingui(){
         java.util.List l = ordiniLista.getCheckedItems();
         for(int i = 0; i < l.size(); i++){
             String ord = l.get(i).toString().substring(l.get(i).toString().indexOf(":")+2);
@@ -152,7 +152,7 @@ public class EstinguiOrdini extends javax.swing.JPanel {
                     Float p = rs.getFloat("P");
                     int q = rs.getInt("Q");
                     String cerca = "SELECT BARCODE, QUANTITA FROM PRODOTTO_NEGOZIO "
-                            + "WHERE BARCODE = '" + barcode + "'";
+                        + "WHERE BARCODE = '" + barcode + "'";
                     Statement stmt2 = this.conn.createStatement();
                     ResultSet rs2 = stmt2.executeQuery(cerca);
                     int nRows = 0;
@@ -165,30 +165,35 @@ public class EstinguiOrdini extends javax.swing.JPanel {
                     if(nRows == 0){
                         p = (float) (p*1.25);
                         update = "INSERT"
-                                + " INTO PRODOTTO_NEGOZIO"
-                                + "(BARCODE, NOME, TAGLIA, MATERIALE, QUANTITA, PREZZO) "
-                                + "VALUES('"+ barcode+"','"+n+"', '"+t+"', '"+m+"', "+q+","+p+")";
+                            + " INTO PRODOTTO_NEGOZIO"
+                            + "(BARCODE, NOME, TAGLIA, MATERIALE, QUANTITA, PREZZO) "
+                            + "VALUES('"+ barcode+"','"+n+"', '"+t+"', '"+m+"', "+q+","+p+")";
                         
                     }
                     else{
                         q += presente;
                         update = "UPDATE PRODOTTO_NEGOZIO SET QUANTITA = " + q
-                                + " WHERE BARCODE = '" + barcode +"'";
+                            + " WHERE BARCODE = '" + barcode +"'";
                     }
                     Statement stmt3 = this.conn.createStatement();
                     stmt3.executeUpdate(update);
                     String delete = "DELETE FROM PRODOTTO_ORDINE "
-                            + "WHERE COD_PROD_ORD = '" + barcode + "' "
-                            + "AND COD_ORDINE = '" + ord + "'";
+                        + "WHERE COD_PROD_ORD = '" + barcode + "' "
+                        + "AND COD_ORDINE = '" + ord + "'";
                     stmt3.executeUpdate(delete);
                 }
                 String delete = "DELETE FROM ORDINE WHERE COD_ORDINE = '" + ord + "'";
                 stmt.executeUpdate(delete);
             } catch (SQLException e) {
-            }            
-            ordiniEstinti.setVisible(true);
-            ordiniEstinti.setLocationRelativeTo(null);
+                e.printStackTrace();
+            }
         }
+    }
+        
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+            estingui();
+            ordiniEstinti.setVisible(true);
+            ordiniEstinti.setLocationRelativeTo(null);        
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
