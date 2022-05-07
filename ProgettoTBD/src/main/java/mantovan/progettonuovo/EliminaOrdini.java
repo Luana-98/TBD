@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 
 /**
@@ -60,6 +62,7 @@ public class EliminaOrdini extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         eliminaButton = new javax.swing.JButton();
 
+        confirmDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         confirmDialog.setMinimumSize(new java.awt.Dimension(400, 300));
 
         jLabel1.setText("Sei sicuro di voler annullare gli ordini selezionati?");
@@ -150,15 +153,48 @@ public class EliminaOrdini extends javax.swing.JPanel {
     }//GEN-LAST:event_noButtonMouseClicked
 
     private void esegui(){
-        //questa procedura serve per eliminare gli elementi selezionati
+        // bisogna eliminare l'ordine e i prodotti dell'ordine e spostare elementi in posizione giusta!!!
         java.util.List l = eliminaList.getCheckedItems();
         for(int i = 0; i < l.size(); i++){
-            System.out.println(l.get(i));
+            //trova 
+            String ord = l.get(i).toString().substring(l.get(i).toString().indexOf(":")+2);
+            System.out.println(ord);
+            String trovaQ = "SELECT QUANTITA, COD_PROD_ORD FROM PRODOTTO_ORDINE WHERE "
+                    + "PRODOTTO_ORDINE.COD_ORDINE = '" + ord + "'";
+            try {
+                Statement st = conn.createStatement();
+                ResultSet rs = st.executeQuery(trovaQ);
+                while(rs.next()){                    
+                    String barcode = rs.getString("COD_PROD_ORD");
+                    int q = rs.getInt("QUANTITA");
+                    String cerca = "SELECT QUANTITA FROM PRODOTTO "
+                        + "WHERE BARCODE = '" + barcode + "'";
+                    Statement st2 = conn.createStatement();
+                    ResultSet rs2 = st2.executeQuery(cerca);
+                    rs2.next();
+                    int presente = rs2.getInt("QUANTITA");
+                    q+=presente;
+                    String update = "UPDATE PRODOTTO SET QUANTITA = " + q
+                            + " WHERE BARCODE = '" + barcode +"'";
+                    st2.executeUpdate(update);
+                }
+            String deleteProd = "DELETE FROM PRODOTTO_ORDINE WHERE "
+                    + "COD_ORDINE = '" + ord + "'";
+            String deleteOrd = "DELETE FROM ORDINE WHERE COD_ORDINE = '" + ord + "'";
+            Statement stmt;            
+            stmt = conn.createStatement();
+            stmt.executeUpdate(deleteProd);
+            stmt.executeUpdate(deleteOrd);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
         }
     }
     
     private void yesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMouseClicked
         esegui();
+        riempiLista();
         confirmDialog.dispose();
     }//GEN-LAST:event_yesButtonMouseClicked
 

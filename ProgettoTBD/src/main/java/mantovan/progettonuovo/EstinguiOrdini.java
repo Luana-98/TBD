@@ -63,6 +63,7 @@ public class EstinguiOrdini extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         jButton1 = new javax.swing.JButton();
 
+        ordiniEstinti.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         ordiniEstinti.setMinimumSize(new java.awt.Dimension(400, 300));
 
         jButton2.setText("Ok");
