@@ -20,6 +20,7 @@ public class Home extends javax.swing.JFrame {
     VediOrdini vedi;
     EstinguiOrdini estingui;
     EliminaOrdini elimina;
+    Guadagno guadagno;
     /**
      * Creates new form Home
      */
@@ -48,6 +49,8 @@ public class Home extends javax.swing.JFrame {
         jTabbedPane2.addTab("Estingui ordini", estingui);
         elimina = new EliminaOrdini(conn);
         jTabbedPane2.addTab("Elimina Ordini", elimina);
+        guadagno = new Guadagno(conn);
+        jTabbedPane2.addTab("Guadagno giornaliero", guadagno);
     }
 
     /**
@@ -112,6 +115,9 @@ public class Home extends javax.swing.JFrame {
                 break;
             case 5:
                 elimina.riempiLista();
+                break;
+            case 6:
+                guadagno.riempiGuadagnoTable();
                 break;
         }
     }//GEN-LAST:event_jTabbedPane2MouseClicked

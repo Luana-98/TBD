@@ -27,19 +27,19 @@ public class Prodotti extends javax.swing.JPanel {
         riempiTabella();
     }
     public void riempiTabella(){
-        String prodottiQuery = "SELECT PRODOTTO_NEGOZIO.NOME, PRODOTTO_NEGOZIO.PREZZO, PRODOTTO_NEGOZIO.QUANTITA FROM PRODOTTO_NEGOZIO, PRODOTTO"
-                + " WHERE PRODOTTO.BARCODE = PRODOTTO_NEGOZIO.BARCODE";
+        String prodottiQuery = "SELECT NOME, PREZZO, QUANTITA, BARCODE FROM PRODOTTO_NEGOZIO";
         try{
             Statement stmt = this.conn.createStatement();
             ResultSet rs = stmt.executeQuery(prodottiQuery);
             DefaultTableModel model = (DefaultTableModel) prodottiTable.getModel();
             model.setRowCount(0);
             while(rs.next()){
+                String b = rs.getString("BARCODE");
                 String s = rs.getString("NOME");
                 double t = rs.getDouble("PREZZO");
                 DecimalFormat df = new DecimalFormat("#.00");
                 int q = rs.getInt("QUANTITA");   
-                model.addRow(new Object[]{s, df.format(t), q});
+                model.addRow(new Object[]{b, s, df.format(t), q});
             }
         }
         catch(SQLException se){
@@ -61,17 +61,17 @@ public class Prodotti extends javax.swing.JPanel {
 
         prodottiTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nome", "Prezzo", "Quantità"
+                "Barcode", "Nome", "Prezzo", "Quantità"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
