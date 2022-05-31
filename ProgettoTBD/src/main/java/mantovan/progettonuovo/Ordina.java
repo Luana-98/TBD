@@ -185,10 +185,7 @@ public class Ordina extends javax.swing.JPanel {
 
         ordinaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Magazzino", "Categoria", "Barcode", "Prodotto", "Taglia", "Quantità", "Prezzo"
@@ -202,9 +199,12 @@ public class Ordina extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        ordinaTable.setPreferredSize(new java.awt.Dimension(50, 64));
+        ordinaTable.setMaximumSize(new java.awt.Dimension(2147483647, 2000));
+        ordinaTable.setName(""); // NOI18N
+        ordinaTable.setPreferredSize(null);
         ordinaTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         ordinaTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        ordinaTable.setShowGrid(true);
         ordinaTable.getTableHeader().setReorderingAllowed(false);
         ordinaTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -212,6 +212,7 @@ public class Ordina extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(ordinaTable);
+        ordinaTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jLabel2.setText("Riepilogo ordine:");
 
@@ -260,7 +261,7 @@ public class Ordina extends javax.swing.JPanel {
                                 .addComponent(catchoice, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(42, 42, 42)
                                 .addComponent(aggiornaButton))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,20 +304,9 @@ public class Ordina extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(ordinaOk)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ordinaTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordinaTableMouseClicked
-        if (evt.getClickCount() == 2 && ordinaTable.getSelectedRow() != -1) {
-            this.setEnabled(false);
-            int maximum = (int) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 5);
-            SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
-            ordinaSpinner.setModel(m);
-            ordinaDialog.setVisible(true);
-            ordinaDialog.setLocationRelativeTo(null);
-        }
-    }//GEN-LAST:event_ordinaTableMouseClicked
     public void ordinaInit(){
         String magQuery = "SELECT CODMAG, NOME FROM MAGAZZINO";
         String catQuery = "SELECT CODCAT, NOMECAT FROM CATEGORIA";
@@ -365,6 +355,7 @@ public class Ordina extends javax.swing.JPanel {
             Statement stmt = this.conn.createStatement();
             ResultSet rs = stmt.executeQuery(tableQuery);
             DefaultTableModel model = (DefaultTableModel) ordinaTable.getModel();
+            
             model.setRowCount(0);
             while(rs.next()){
                 String s = rs.getString("MAG");
@@ -376,7 +367,9 @@ public class Ordina extends javax.swing.JPanel {
                 float p = rs.getFloat("PREZZO");
                 DecimalFormat df = new DecimalFormat("#.00");         
                 model.addRow(new Object[]{s, t,b, u, v, q, df.format(p)});
+                ordinaTable.setModel(model);
             }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -501,6 +494,17 @@ public class Ordina extends javax.swing.JPanel {
         this.setEnabled(true);
         completedDialog.dispose();
     }//GEN-LAST:event_completedButtonMouseClicked
+
+    private void ordinaTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordinaTableMouseClicked
+        if (evt.getClickCount() == 2 && ordinaTable.getSelectedRow() != -1) {
+            this.setEnabled(false);
+            int maximum = (int) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 5);
+            SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
+            ordinaSpinner.setModel(m);
+            ordinaDialog.setVisible(true);
+            ordinaDialog.setLocationRelativeTo(null);
+        }
+    }//GEN-LAST:event_ordinaTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

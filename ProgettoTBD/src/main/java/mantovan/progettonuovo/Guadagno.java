@@ -137,10 +137,7 @@ public class Guadagno extends javax.swing.JPanel {
 
         guadagnoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Barcode", "Nome", "Quantità", "Prezzo"
@@ -154,6 +151,7 @@ public class Guadagno extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        guadagnoTable.setMaximumSize(new java.awt.Dimension(2147483647, 20000));
         guadagnoTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guadagnoTableMouseClicked(evt);

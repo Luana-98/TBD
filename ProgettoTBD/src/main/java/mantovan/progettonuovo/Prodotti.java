@@ -78,6 +78,8 @@ public class Prodotti extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        prodottiTable.setMaximumSize(new java.awt.Dimension(2147483647, 260000));
+        prodottiTable.setMinimumSize(new java.awt.Dimension(60, 0));
         prodottiTable.setPreferredSize(new java.awt.Dimension(375, 263));
         jScrollPane1.setViewportView(prodottiTable);
 
