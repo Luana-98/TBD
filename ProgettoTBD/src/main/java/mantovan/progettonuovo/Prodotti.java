@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -41,6 +42,7 @@ public class Prodotti extends javax.swing.JPanel {
                 int q = rs.getInt("QUANTITA");   
                 model.addRow(new Object[]{b, s, df.format(t), q});
             }
+            prodottiTable.setModel(model);
         }
         catch(SQLException se){
             se.printStackTrace();
@@ -58,13 +60,13 @@ public class Prodotti extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         prodottiTable = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        prodottiList = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
 
         prodottiTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Barcode", "Nome", "Prezzo", "Quantità"
@@ -81,33 +83,79 @@ public class Prodotti extends javax.swing.JPanel {
         prodottiTable.setMaximumSize(new java.awt.Dimension(2147483647, 260000));
         prodottiTable.setMinimumSize(new java.awt.Dimension(60, 0));
         prodottiTable.setPreferredSize(new java.awt.Dimension(375, 263));
+        prodottiTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                prodottiTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(prodottiTable);
+
+        prodottiList.setEnabled(false);
+        jScrollPane2.setViewportView(prodottiList);
+
+        jLabel1.setText("Dettagli prodotto:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 488, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(12, 12, 12)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(12, 12, 12)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void prodottiTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prodottiTableMouseClicked
+        String query = "SELECT * FROM PRODOTTO_NEGOZIO WHERE BARCODE = '" + prodottiTable.getModel().getValueAt(prodottiTable.getSelectedRow(), 0) + "'";
+        try{
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            DefaultListModel model = new DefaultListModel();           
+            while(rs.next()){
+                String b = rs.getString("BARCODE");
+                String s = rs.getString("NOME");
+                String tg = rs.getString("TAGLIA");
+                String m = rs.getString("MATERIALE");                
+                double t = rs.getDouble("PREZZO");
+                DecimalFormat df = new DecimalFormat("#.00");
+                int q = rs.getInt("QUANTITA");
+                model.addElement("BARCODE: " + b);
+                model.addElement("NOME: " + s);
+                model.addElement("TAGLIA: " + tg);
+                model.addElement("MATERIALE: " + m);
+                model.addElement("QUANTITA': " + q);
+                model.addElement("PREZZO: " + df.format(t));                
+            }
+            prodottiList.setModel(model);
+        }
+        catch(SQLException se){
+            se.printStackTrace();
+        }
+    }//GEN-LAST:event_prodottiTableMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> prodottiList;
     private javax.swing.JTable prodottiTable;
     // End of variables declaration//GEN-END:variables
 }

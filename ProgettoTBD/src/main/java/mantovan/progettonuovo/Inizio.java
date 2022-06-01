@@ -36,6 +36,7 @@ public class Inizio extends javax.swing.JPanel {
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton5 = new javax.swing.JRadioButton();
         jRadioButton6 = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
 
         bentornato.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         bentornato.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -51,50 +52,58 @@ public class Inizio extends javax.swing.JPanel {
         jRadioButton2.setActionCommand("");
 
         jRadioButton3.setSelected(true);
-        jRadioButton3.setText("jRadioButton1");
+        jRadioButton3.setText("ELIMINA ORDINI: annulla ordini errati");
         jRadioButton3.setActionCommand("");
 
         jRadioButton4.setSelected(true);
-        jRadioButton4.setText("jRadioButton1");
+        jRadioButton4.setText("VISUALIZZA ORDINI: permette di visualizzare gli ordini effettuati");
         jRadioButton4.setActionCommand("");
 
         jRadioButton5.setSelected(true);
-        jRadioButton5.setText("jRadioButton1");
+        jRadioButton5.setText("ESTINGUI ORDINI: la merce è arrivata in negozio? Segnalamelo");
         jRadioButton5.setActionCommand("");
 
         jRadioButton6.setSelected(true);
-        jRadioButton6.setText("jRadioButton1");
+        jRadioButton6.setText("GUADAGNO GIORNALIERO: calcola gli introiti di oggi");
         jRadioButton6.setActionCommand("");
+
+        jLabel1.setText("Clicca nelle label a fianco per effettuare delle azioni");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bentornato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton6)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jRadioButton3)
                             .addComponent(jRadioButton2)
-                            .addComponent(jRadioButton4)
+                            .addComponent(jRadioButton5)
+                            .addComponent(jRadioButton4))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButton6)
                             .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton5))
-                        .addGap(90, 193, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bentornato, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(23, 23, 23)
                 .addComponent(bentornato)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(41, 41, 41)
                 .addComponent(jRadioButton1)
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButton2)
@@ -106,13 +115,14 @@ public class Inizio extends javax.swing.JPanel {
                 .addComponent(jRadioButton3)
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButton6)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bentornato;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;

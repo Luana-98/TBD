@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.SpinnerNumberModel;
@@ -47,9 +49,13 @@ public class Ordina extends javax.swing.JPanel {
         eliminaSpinner = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         eliminaOk = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        AreaElimina = new javax.swing.JTextArea();
         ordinaDialog = new javax.swing.JDialog();
         ordinaSpinner = new javax.swing.JSpinner();
         okOrdinaDialog = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        AreaOrdine = new javax.swing.JTextArea();
         completedDialog = new javax.swing.JDialog();
         jLabel5 = new javax.swing.JLabel();
         completedButton = new javax.swing.JButton();
@@ -78,33 +84,40 @@ public class Ordina extends javax.swing.JPanel {
             }
         });
 
+        AreaElimina.setColumns(20);
+        AreaElimina.setRows(5);
+        jScrollPane4.setViewportView(AreaElimina);
+
         javax.swing.GroupLayout eliminaDialogLayout = new javax.swing.GroupLayout(eliminaDialog.getContentPane());
         eliminaDialog.getContentPane().setLayout(eliminaDialogLayout);
         eliminaDialogLayout.setHorizontalGroup(
             eliminaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, eliminaDialogLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(eliminaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(76, 76, 76)
                 .addComponent(eliminaOk)
                 .addGap(42, 42, 42))
             .addGroup(eliminaDialogLayout.createSequentialGroup()
-                .addGroup(eliminaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(eliminaDialogLayout.createSequentialGroup()
-                        .addGap(73, 73, 73)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(eliminaDialogLayout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(eliminaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addGap(74, 74, 74)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(83, Short.MAX_VALUE))
+            .addGroup(eliminaDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4)
+                .addContainerGap())
         );
         eliminaDialogLayout.setVerticalGroup(
             eliminaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(eliminaDialogLayout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel4)
-                .addGap(40, 40, 40)
-                .addComponent(eliminaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77)
-                .addComponent(eliminaOk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(eliminaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(eliminaOk)
+                    .addComponent(eliminaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43))
         );
 
@@ -118,27 +131,36 @@ public class Ordina extends javax.swing.JPanel {
             }
         });
 
+        AreaOrdine.setColumns(20);
+        AreaOrdine.setRows(5);
+        AreaOrdine.setOpaque(false);
+        jScrollPane1.setViewportView(AreaOrdine);
+
         javax.swing.GroupLayout ordinaDialogLayout = new javax.swing.GroupLayout(ordinaDialog.getContentPane());
         ordinaDialog.getContentPane().setLayout(ordinaDialogLayout);
         ordinaDialogLayout.setHorizontalGroup(
             ordinaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ordinaDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(187, Short.MAX_VALUE)
+                .addComponent(ordinaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addComponent(okOrdinaDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
             .addGroup(ordinaDialogLayout.createSequentialGroup()
-                .addGap(142, 142, 142)
-                .addComponent(ordinaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         ordinaDialogLayout.setVerticalGroup(
             ordinaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ordinaDialogLayout.createSequentialGroup()
-                .addContainerGap(125, Short.MAX_VALUE)
-                .addComponent(ordinaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(okOrdinaDialog)
-                .addGap(56, 56, 56))
+                .addContainerGap(36, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addGroup(ordinaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(okOrdinaDialog)
+                    .addComponent(ordinaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52))
         );
 
         completedDialog.setMinimumSize(new java.awt.Dimension(400, 300));
@@ -379,15 +401,54 @@ public class Ordina extends javax.swing.JPanel {
         riempiOrdinaTable();
     }//GEN-LAST:event_aggiornaButtonMouseClicked
 
+    private void riempiEliminaDialog(int max, String barcode){
+        SpinnerNumberModel m = new SpinnerNumberModel(0, 0, max, 1);
+        eliminaSpinner.setModel(m);
+        String query = "SELECT MAGAZZINO.NOME AS MN,MAGAZZINO.LUOGO AS ML, "
+                + "MAGAZZINO.PROPRIETARIO AS MP,"
+                + "MAGAZZINO.CODMAG AS MC, NOMECAT, PRODOTTO.NOME AS PN, "
+                + "PRODOTTO.QUANTITA AS PQ, PRODOTTO.PREZZO AS PP "
+                + "FROM MAGAZZINO, CATEGORIA, PRODOTTO, MAGCAT "
+                + "WHERE BARCODE = '" + barcode + "' AND "
+                + "PRODOTTO.CODCAT = CATEGORIA.CODCAT AND "
+                + "CATEGORIA.CODCAT = MAGCAT.CODCAT AND "
+                + "MAGCAT.CODMAG = MAGAZZINO.CODMAG";
+        Statement stmt;
+        try {
+            stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                String magazzinoNome= rs.getString("MN");
+                String magazzinoLuogo= rs.getString("ML");
+                String magazzinoP= rs.getString("MP");
+                String magazzinoCod= rs.getString("MC");
+                String CategoriaNome= rs.getString("NOMECAT");
+                String prodottoNome= rs.getString("PN");
+                String prodottoQ= rs.getString("PQ");
+                Double prodottoPrezzo= rs.getDouble("PP");
+                DecimalFormat df = new DecimalFormat("#.00");
+                String mag = magazzinoCod + ": " + magazzinoLuogo + " " + magazzinoNome + " - Proprietario: " + magazzinoP;
+                String cat = "Categoria: " + CategoriaNome;
+                String prod = prodottoNome + " disponibili: " + prodottoQ + " x" + df.format(prodottoPrezzo) + "€";
+                
+                AreaElimina.setText(mag + "\n" + cat + "\n" + prod);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }   
+    }
+    
+    
     private void ordinaListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordinaListMouseClicked
         if (evt.getClickCount() == 2 && ordinaList.getSelectedIndex() != -1) {
             this.setEnabled(false);
             DefaultListModel model = (DefaultListModel) ordinaList.getModel();
-            String nq = model.get(ordinaList.getSelectedIndex()).toString();
-            nq = nq.substring(nq.indexOf(":")+2, nq.indexOf("*"));
-            int maximum = Integer.parseInt(nq);
-            SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
-            eliminaSpinner.setModel(m);
+            String nq = model.get(ordinaList.getSelectedIndex()).toString();            
+            String barcode = nq.substring(nq.indexOf("*")+2, nq.lastIndexOf(":"));
+            
+            nq = nq.substring(nq.indexOf(":")+2, nq.indexOf("*"));           
+            int maximum = Integer.parseInt(nq);            
+            riempiEliminaDialog(maximum, barcode);
             eliminaDialog.setVisible(true);
             eliminaDialog.setLocationRelativeTo(null);
         }
@@ -495,12 +556,49 @@ public class Ordina extends javax.swing.JPanel {
         completedDialog.dispose();
     }//GEN-LAST:event_completedButtonMouseClicked
 
+    private void riempiOrdinaDialog(int max, String barcode){
+        SpinnerNumberModel m = new SpinnerNumberModel(0, 0, max, 1);
+        ordinaSpinner.setModel(m);
+        String query = "SELECT MAGAZZINO.NOME AS MN,MAGAZZINO.LUOGO AS ML, "
+                + "MAGAZZINO.PROPRIETARIO AS MP,"
+                + "MAGAZZINO.CODMAG AS MC, NOMECAT, PRODOTTO.NOME AS PN, "
+                + "PRODOTTO.QUANTITA AS PQ, PRODOTTO.PREZZO AS PP "
+                + "FROM MAGAZZINO, CATEGORIA, PRODOTTO, MAGCAT "
+                + "WHERE BARCODE = '" + barcode + "' AND "
+                + "PRODOTTO.CODCAT = CATEGORIA.CODCAT AND "
+                + "CATEGORIA.CODCAT = MAGCAT.CODCAT AND "
+                + "MAGCAT.CODMAG = MAGAZZINO.CODMAG";
+        Statement stmt;
+        try {
+            stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                String magazzinoNome= rs.getString("MN");
+                String magazzinoLuogo= rs.getString("ML");
+                String magazzinoP= rs.getString("MP");
+                String magazzinoCod= rs.getString("MC");
+                String CategoriaNome= rs.getString("NOMECAT");
+                String prodottoNome= rs.getString("PN");
+                String prodottoQ= rs.getString("PQ");
+                Double prodottoPrezzo= rs.getDouble("PP");
+                DecimalFormat df = new DecimalFormat("#.00");
+                String mag = magazzinoCod + ": " + magazzinoLuogo + " " + magazzinoNome + " - Proprietario: " + magazzinoP;
+                String cat = "Categoria: " + CategoriaNome;
+                String prod = prodottoNome + " disponibili: " + prodottoQ + " x" + df.format(prodottoPrezzo) + "€";
+                AreaOrdine.setText(mag + "\n" + cat + "\n" + prod);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }   
+    }
+    
+    
     private void ordinaTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordinaTableMouseClicked
         if (evt.getClickCount() == 2 && ordinaTable.getSelectedRow() != -1) {
             this.setEnabled(false);
             int maximum = (int) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 5);
-            SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
-            ordinaSpinner.setModel(m);
+            String barcode = (String) ordinaTable.getValueAt(ordinaTable.getSelectedRow(), 2);            
+            riempiOrdinaDialog(maximum, barcode);
             ordinaDialog.setVisible(true);
             ordinaDialog.setLocationRelativeTo(null);
         }
@@ -508,6 +606,8 @@ public class Ordina extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea AreaElimina;
+    private javax.swing.JTextArea AreaOrdine;
     private javax.swing.JButton aggiornaButton;
     public javax.swing.JTextField cart;
     private javax.swing.JComboBox<String> catchoice;
@@ -521,8 +621,10 @@ public class Ordina extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JComboBox<String> magchoice;
     private javax.swing.JButton okOrdinaDialog;
     private javax.swing.JDialog ordinaDialog;
