@@ -27,6 +27,10 @@ public class Prodotti extends javax.swing.JPanel {
         this.conn = conn;
         riempiTabella();
     }
+    
+    public void svuotaLista(){
+        prodottiList.setModel(new DefaultListModel());
+    }
     public void riempiTabella(){
         String prodottiQuery = "SELECT NOME, PREZZO, QUANTITA, BARCODE FROM PRODOTTO_NEGOZIO";
         try{
@@ -80,9 +84,11 @@ public class Prodotti extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        prodottiTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         prodottiTable.setMaximumSize(new java.awt.Dimension(2147483647, 260000));
-        prodottiTable.setMinimumSize(new java.awt.Dimension(60, 0));
         prodottiTable.setPreferredSize(new java.awt.Dimension(375, 263));
+        prodottiTable.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        prodottiTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         prodottiTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 prodottiTableMouseClicked(evt);
@@ -90,7 +96,9 @@ public class Prodotti extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(prodottiTable);
 
-        prodottiList.setEnabled(false);
+        prodottiList.setOpaque(false);
+        prodottiList.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        prodottiList.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(prodottiList);
 
         jLabel1.setText("Dettagli prodotto:");

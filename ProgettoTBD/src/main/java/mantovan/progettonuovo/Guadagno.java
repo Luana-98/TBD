@@ -64,6 +64,9 @@ public class Guadagno extends javax.swing.JPanel {
         guadagnoDialog = new javax.swing.JDialog();
         guadagnoSpinner = new javax.swing.JSpinner();
         okGuadagnoButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        guadagnoArea = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
         finaleDialog = new javax.swing.JDialog();
         jTextField1 = new javax.swing.JTextField();
         finaleButton = new javax.swing.JButton();
@@ -73,37 +76,67 @@ public class Guadagno extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         guadagnoList = new javax.swing.JList<>();
 
-        okGuadagnoButton.setText("jButton1");
+        guadagnoDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        guadagnoDialog.setMinimumSize(new java.awt.Dimension(400, 300));
+
+        okGuadagnoButton.setText("Ok");
         okGuadagnoButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okGuadagnoButtonMouseClicked(evt);
             }
         });
 
+        guadagnoArea.setColumns(20);
+        guadagnoArea.setRows(5);
+        guadagnoArea.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        guadagnoArea.setEnabled(false);
+        guadagnoArea.setOpaque(false);
+        jScrollPane3.setViewportView(guadagnoArea);
+
+        jLabel1.setText("Quantità vendute: ");
+
         javax.swing.GroupLayout guadagnoDialogLayout = new javax.swing.GroupLayout(guadagnoDialog.getContentPane());
         guadagnoDialog.getContentPane().setLayout(guadagnoDialogLayout);
         guadagnoDialogLayout.setHorizontalGroup(
             guadagnoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(guadagnoDialogLayout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addComponent(guadagnoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addGroup(guadagnoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(guadagnoDialogLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(guadagnoDialogLayout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(guadagnoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(guadagnoDialogLayout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guadagnoDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(okGuadagnoButton)
-                .addGap(51, 51, 51))
+                .addGap(53, 53, 53))
         );
         guadagnoDialogLayout.setVerticalGroup(
             guadagnoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(guadagnoDialogLayout.createSequentialGroup()
-                .addGap(129, 129, 129)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(20, 20, 20)
                 .addComponent(guadagnoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(okGuadagnoButton)
-                .addGap(37, 37, 37))
+                .addGap(59, 59, 59))
         );
 
+        finaleDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        finaleDialog.setMinimumSize(new java.awt.Dimension(400, 300));
+
         jTextField1.setEditable(false);
+        jTextField1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextField1.setEnabled(false);
+        jTextField1.setOpaque(false);
 
         finaleButton.setText("Ok");
         finaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -197,12 +230,41 @@ public class Guadagno extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void riempiGuadagnoDialog(int maximum, String barcode){
+        SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
+        guadagnoSpinner.setModel(m);
+        String query = "SELECT * "
+                + "FROM PRODOTTO_NEGOZIO "
+                + "WHERE BARCODE = '" + barcode + "'";
+        System.out.println(query);
+        Statement stmt;
+        try {
+            stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                String Nome= rs.getString("NOME");
+                String Taglia= rs.getString("TAGLIA");
+                String Materiale= rs.getString("MATERIALE");
+                String quantita= rs.getString("QUANTITA");
+                Double prezzo= rs.getDouble("PREZZO");
+                DecimalFormat df = new DecimalFormat("#.00");
+                String prima = Nome + "\n";
+                String seconda = "Taglia: " + Taglia + "\t Materiale: " + Materiale + "\n";
+                String terza = "Quantità in negozio: " + quantita + "\t Prezzo: " + df.format(prezzo);
+                guadagnoArea.setText(prima+seconda+terza);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }   
+        
+    }
+    
     private void guadagnoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guadagnoTableMouseClicked
         if (evt.getClickCount() == 2 && guadagnoTable.getSelectedRow() != -1) {
             this.setEnabled(false);
-            int maximum = (int) guadagnoTable.getValueAt(guadagnoTable.getSelectedRow(), 2);
-            SpinnerNumberModel m = new SpinnerNumberModel(0, 0, maximum, 1);
-            guadagnoSpinner.setModel(m);
+            int maximum = (int) guadagnoTable.getValueAt(guadagnoTable.getSelectedRow(), 2);   
+            String barcode = (String) guadagnoTable.getValueAt(guadagnoTable.getSelectedRow(), 0); 
+            riempiGuadagnoDialog(maximum, barcode);
             guadagnoDialog.setVisible(true);
             guadagnoDialog.setLocationRelativeTo(null);
         }
@@ -289,13 +351,16 @@ public class Guadagno extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton finaleButton;
     private javax.swing.JDialog finaleDialog;
+    private javax.swing.JTextArea guadagnoArea;
     private javax.swing.JButton guadagnoButton;
     private javax.swing.JDialog guadagnoDialog;
     private javax.swing.JList<String> guadagnoList;
     private javax.swing.JSpinner guadagnoSpinner;
     private javax.swing.JTable guadagnoTable;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton okGuadagnoButton;
     // End of variables declaration//GEN-END:variables

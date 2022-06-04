@@ -84,8 +84,14 @@ public class Ordina extends javax.swing.JPanel {
             }
         });
 
+        AreaElimina.setEditable(false);
         AreaElimina.setColumns(20);
         AreaElimina.setRows(5);
+        AreaElimina.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        AreaElimina.setFocusable(false);
+        AreaElimina.setOpaque(false);
+        AreaElimina.setSelectedTextColor(new java.awt.Color(0, 0, 0));
+        AreaElimina.setSelectionColor(new java.awt.Color(255, 255, 255));
         jScrollPane4.setViewportView(AreaElimina);
 
         javax.swing.GroupLayout eliminaDialogLayout = new javax.swing.GroupLayout(eliminaDialog.getContentPane());
@@ -364,7 +370,8 @@ public class Ordina extends javax.swing.JPanel {
                 + "FROM MAGAZZINO, CATEGORIA, PRODOTTO, MAGCAT "
                 + "WHERE MAGAZZINO.CODMAG = MAGCAT.CODMAG "
                 + "AND CATEGORIA.CODCAT = MAGCAT.CODCAT "
-                + "AND CATEGORIA.CODCAT = PRODOTTO.CODCAT ";
+                + "AND CATEGORIA.CODCAT = PRODOTTO.CODCAT "
+                + "ORDER BY MAGAZZINO.CODMAG";
         if(magIndex != 0){
             magString = magString.substring(0, magString.indexOf(":"));
             tableQuery += ("AND MAGAZZINO.CODMAG = '" + magString + "'");

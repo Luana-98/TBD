@@ -102,6 +102,7 @@ public class Home extends javax.swing.JFrame {
                 break;
             case 1:
                 p.riempiTabella();
+                p.svuotaLista();
                 break;
             case 2:                
                 ordina.riempiOrdinaTable();
