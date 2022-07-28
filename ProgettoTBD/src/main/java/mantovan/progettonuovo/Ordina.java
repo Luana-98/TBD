@@ -370,18 +370,19 @@ public class Ordina extends javax.swing.JPanel {
                 + "FROM MAGAZZINO, CATEGORIA, PRODOTTO, MAGCAT "
                 + "WHERE MAGAZZINO.CODMAG = MAGCAT.CODMAG "
                 + "AND CATEGORIA.CODCAT = MAGCAT.CODCAT "
-                + "AND CATEGORIA.CODCAT = PRODOTTO.CODCAT "
-                + "ORDER BY MAGAZZINO.CODMAG";
+                + "AND CATEGORIA.CODCAT = PRODOTTO.CODCAT ";
         if(magIndex != 0){
             magString = magString.substring(0, magString.indexOf(":"));
-            tableQuery += ("AND MAGAZZINO.CODMAG = '" + magString + "'");
+            tableQuery += ("AND MAGAZZINO.CODMAG = '" + magString + "' ");
         }
         if(catIndex != 0){
             catString = catString.substring(0, catString.indexOf(":"));
-            tableQuery += ("AND CATEGORIA.CODCAT = '" + catString + "'");
+            tableQuery += ("AND CATEGORIA.CODCAT = '" + catString + "' ");
         }
+        tableQuery+= "ORDER BY MAGAZZINO.CODMAG ";
         try {
             Statement stmt = this.conn.createStatement();
+            System.out.println(tableQuery);
             ResultSet rs = stmt.executeQuery(tableQuery);
             DefaultTableModel model = (DefaultTableModel) ordinaTable.getModel();
             
