@@ -25,16 +25,7 @@ public class Home extends javax.swing.JFrame {
      * Creates new form Home
      */
     public Home() {
-        try{            
-            Class.forName("com.ibm.db2.jcc.DB2Driver");
-            System.out.println("connecting");
-            String url = "jdbc:db2://55fbc997-9266-4331-afd3-888b05e734c0.bs2io90l08kqb1od8lcg.databases.appdomain.cloud:31929/bludb:user=trd74291;password=TtqUOVMDN5woGzpe;sslConnection=true;";
-            this.conn = DriverManager.getConnection(url);
-            System.out.println("Connected!");
-        }
-        catch(Exception se){
-            se.printStackTrace();
-        }
+        this.conn = getConnection();
         initComponents();
         this.setLocationRelativeTo(null);
         in = new Inizio();
@@ -53,6 +44,20 @@ public class Home extends javax.swing.JFrame {
         jTabbedPane2.addTab("Guadagno giornaliero", guadagno);
     }
 
+    public Connection getConnection(){
+        Connection connection = null;
+        try{            
+            Class.forName("com.ibm.db2.jcc.DB2Driver");
+            System.out.println("connecting");
+            String url = "jdbc:db2://55fbc997-9266-4331-afd3-888b05e734c0.bs2io90l08kqb1od8lcg.databases.appdomain.cloud:31929/bludb:user=trd74291;password=TtqUOVMDN5woGzpe;sslConnection=true;";
+            connection = DriverManager.getConnection(url);
+            System.out.println("Connected!");
+        }
+        catch(Exception se){
+            se.printStackTrace();
+        }
+        return connection;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
