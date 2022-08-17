@@ -21,6 +21,7 @@ public class Prodotti extends javax.swing.JPanel {
     Connection conn;
     /**
      * Creates new form Prodotti
+     * @param conn
      */
     public Prodotti(Connection conn) {
         initComponents();
@@ -28,15 +29,18 @@ public class Prodotti extends javax.swing.JPanel {
         riempiTabella();
     }
     
-    public void svuotaLista(){
+    public int svuotaLista(){
         prodottiList.setModel(new DefaultListModel());
+        return prodottiList.getModel().getSize();
     }
-    public void riempiTabella(){
+    
+    public int riempiTabella(){
         String prodottiQuery = "SELECT NOME, PREZZO, QUANTITA, BARCODE FROM PRODOTTO_NEGOZIO";
+        DefaultTableModel model;
         try{
             Statement stmt = this.conn.createStatement();
             ResultSet rs = stmt.executeQuery(prodottiQuery);
-            DefaultTableModel model = (DefaultTableModel) prodottiTable.getModel();
+            model = (DefaultTableModel) prodottiTable.getModel();
             model.setRowCount(0);
             while(rs.next()){
                 String b = rs.getString("BARCODE");
@@ -47,10 +51,12 @@ public class Prodotti extends javax.swing.JPanel {
                 model.addRow(new Object[]{b, s, df.format(t), q});
             }
             prodottiTable.setModel(model);
+            return model.getRowCount();
         }
         catch(SQLException se){
             se.printStackTrace();
         }
+        return 0;
     }
 
     /**
