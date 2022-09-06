@@ -123,9 +123,12 @@
     <Component class="javax.swing.JRadioButton" name="jRadioButton6">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="GUADAGNO GIORNALIERO: calcola gli introiti di oggi"/>
+        <Property name="text" type="java.lang.String" value="SCONTRINO: calcola il guadagno della merce venduta"/>
         <Property name="actionCommand" type="java.lang.String" value=""/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton6ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

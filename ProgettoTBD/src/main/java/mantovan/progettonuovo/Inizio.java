@@ -64,8 +64,13 @@ public class Inizio extends javax.swing.JPanel {
         jRadioButton5.setActionCommand("");
 
         jRadioButton6.setSelected(true);
-        jRadioButton6.setText("GUADAGNO GIORNALIERO: calcola gli introiti di oggi");
+        jRadioButton6.setText("SCONTRINO: calcola il guadagno della merce venduta");
         jRadioButton6.setActionCommand("");
+        jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton6ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Clicca nelle label a fianco per effettuare delle azioni");
 
@@ -118,6 +123,10 @@ public class Inizio extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton6ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -41,7 +41,7 @@ public class Home extends javax.swing.JFrame {
         elimina = new EliminaOrdini(conn);
         jTabbedPane2.addTab("Elimina Ordini", elimina);
         guadagno = new Guadagno(conn);
-        jTabbedPane2.addTab("Guadagno giornaliero", guadagno);
+        jTabbedPane2.addTab("Scontrino", guadagno);
     }
 
     public Connection getConnection(){

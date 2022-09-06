@@ -463,42 +463,44 @@ public class Ordina extends javax.swing.JPanel {
     }//GEN-LAST:event_ordinaListMouseClicked
 
     private void ordinaOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordinaOkMouseClicked
-        SimpleDateFormat date = new SimpleDateFormat("dd_MM_yyyy_HHmmss");
-        String codOrdine = date.format(new Date());
-        String query = "INSERT INTO ORDINE(COD_ORDINE) VALUES ('" + codOrdine + "')";
-        String queryOrdine;
-        DefaultListModel model = (DefaultListModel) ordinaList.getModel();        
-        try{
-            Statement stmt = this.conn.createStatement();
-            stmt.executeUpdate(query);
-            for(int i = 0; i < model.getSize(); i++){
-                String element = model.getElementAt(i).toString();
-                String codProd = element.substring(element.indexOf("* ")+2, element.lastIndexOf(":"));
-                String magazzino = element.substring(10, element.indexOf(":"));
-                String quantita = element.substring(element.indexOf(":")+2, element.indexOf("*"));
-                String nome = element.substring(element.lastIndexOf(":")+2);
-                queryOrdine = "INSERT INTO PRODOTTO_ORDINE"
-                        + "(PK, COD_PROD_ORD, MAGAZZINO, QUANTITA, COD_ORDINE, NOME)"
-                        + " VALUES(DEFAULT, '" + codProd + "', '" + magazzino + "',"
-                        + quantita + ",'" + codOrdine + "','" + nome + "')";
-                stmt.executeUpdate(queryOrdine);
-                String select = "SELECT QUANTITA FROM PRODOTTO WHERE BARCODE = '" + codProd+"'";
-                ResultSet rs = stmt.executeQuery(select);
-                rs.next();
-                int maxq = rs.getInt("QUANTITA");
-                maxq -= Integer.parseInt(quantita);
-                String update = "UPDATE PRODOTTO SET QUANTITA = " + maxq
-                        + " WHERE BARCODE = '" + codProd + "'";
-                stmt.executeUpdate(update);
-                System.out.println("Completato");
+        if(ordinaList.getModel().getSize() > 0){
+            SimpleDateFormat date = new SimpleDateFormat("dd_MM_yyyy_HHmmss");
+            String codOrdine = date.format(new Date());
+            String query = "INSERT INTO ORDINE(COD_ORDINE) VALUES ('" + codOrdine + "')";
+            String queryOrdine;
+            DefaultListModel model = (DefaultListModel) ordinaList.getModel();        
+            try{
+                Statement stmt = this.conn.createStatement();
+                stmt.executeUpdate(query);
+                for(int i = 0; i < model.getSize(); i++){
+                    String element = model.getElementAt(i).toString();
+                    String codProd = element.substring(element.indexOf("* ")+2, element.lastIndexOf(":"));
+                    String magazzino = element.substring(10, element.indexOf(":"));
+                    String quantita = element.substring(element.indexOf(":")+2, element.indexOf("*"));
+                    String nome = element.substring(element.lastIndexOf(":")+2);
+                    queryOrdine = "INSERT INTO PRODOTTO_ORDINE"
+                            + "(PK, COD_PROD_ORD, MAGAZZINO, QUANTITA, COD_ORDINE, NOME)"
+                            + " VALUES(DEFAULT, '" + codProd + "', '" + magazzino + "',"
+                            + quantita + ",'" + codOrdine + "','" + nome + "')";
+                    stmt.executeUpdate(queryOrdine);
+                    String select = "SELECT QUANTITA FROM PRODOTTO WHERE BARCODE = '" + codProd+"'";
+                    ResultSet rs = stmt.executeQuery(select);
+                    rs.next();
+                    int maxq = rs.getInt("QUANTITA");
+                    maxq -= Integer.parseInt(quantita);
+                    String update = "UPDATE PRODOTTO SET QUANTITA = " + maxq
+                            + " WHERE BARCODE = '" + codProd + "'";
+                    stmt.executeUpdate(update);
+                    System.out.println("Completato");
+                }
             }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            this.setEnabled(false);
+            completedDialog.setVisible(true);
+            completedDialog.setLocationRelativeTo(null);
         }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        this.setEnabled(false);
-        completedDialog.setVisible(true);
-        completedDialog.setLocationRelativeTo(null);
     }//GEN-LAST:event_ordinaOkMouseClicked
     
     private void aggiornaOrdinaLista(){
